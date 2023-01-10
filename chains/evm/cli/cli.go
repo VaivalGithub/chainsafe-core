@@ -1,15 +1,15 @@
 package cli
 
 import (
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/account"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/admin"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/bridge"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/centrifuge"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/deploy"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/erc20"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/erc721"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/logger"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/utils"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/account"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/admin"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/bridge"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/centrifuge"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/deploy"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/erc20"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/erc721"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/logger"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

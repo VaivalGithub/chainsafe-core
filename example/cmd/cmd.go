@@ -4,10 +4,10 @@
 package cmd
 
 import (
-	evmCLI "github.com/sahil3vedi/chainsafe-core/chains/evm/cli"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/local"
-	"github.com/sahil3vedi/chainsafe-core/example/app"
-	"github.com/sahil3vedi/chainsafe-core/flags"
+	evmCLI "github.com/VaivalGithub/chainsafe-core/chains/evm/cli"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/local"
+	"github.com/VaivalGithub/chainsafe-core/example/app"
+	"github.com/VaivalGithub/chainsafe-core/flags"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

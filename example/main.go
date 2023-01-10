@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/sahil3vedi/chainsafe-core/example/cmd"
+	"github.com/VaivalGithub/chainsafe-core/example/cmd"
 )
 
 func main() {

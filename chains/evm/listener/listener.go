@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/sahil3vedi/chainsafe-core/config/chain"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
-	"github.com/sahil3vedi/chainsafe-core/store"
+	"github.com/VaivalGithub/chainsafe-core/config/chain"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/store"
 
 	"github.com/rs/zerolog/log"
 )

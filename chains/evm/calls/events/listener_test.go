@@ -7,9 +7,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/golang/mock/gomock"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/consts"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/events"
-	"github.com/sahil3vedi/chainsafe-core/types"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/events"
+	"github.com/VaivalGithub/chainsafe-core/types"
 	"github.com/stretchr/testify/suite"
 )
 

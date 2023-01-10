@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sahil3vedi/chainsafe-core/config/chain"
+	"github.com/VaivalGithub/chainsafe-core/config/chain"
 	"github.com/stretchr/testify/suite"
 )
 

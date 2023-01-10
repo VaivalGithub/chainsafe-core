@@ -15,11 +15,11 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethereumTypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/consts"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/transactor"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/executor/proposal"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor/proposal"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/rs/zerolog/log"
 )
 

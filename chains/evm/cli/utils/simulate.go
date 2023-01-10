@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmclient"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmclient"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/flags"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/logger"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/flags"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/logger"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

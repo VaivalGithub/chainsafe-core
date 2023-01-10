@@ -1,4 +1,4 @@
-module github.com/sahil3vedi/chainsafe-core
+module github.com/VaivalGithub/chainsafe-core
 
 go 1.17
 

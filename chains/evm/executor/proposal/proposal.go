@@ -3,8 +3,8 @@ package proposal
 import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
-	"github.com/sahil3vedi/chainsafe-core/types"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/types"
 )
 
 func NewProposal(source, destination uint8, depositNonce uint64, resourceId types.ResourceID, data []byte, handlerAddress, bridgeAddress common.Address, metadata message.Metadata) *Proposal {

@@ -3,7 +3,7 @@ package dummy
 import (
 	"math/big"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmgaspricer"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmgaspricer"
 )
 
 type GasPricer interface {

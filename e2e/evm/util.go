@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/consts"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/events"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/events"
 	"github.com/rs/zerolog/log"
 
 	"github.com/ethereum/go-ethereum"

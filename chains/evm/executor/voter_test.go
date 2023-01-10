@@ -7,10 +7,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/golang/mock/gomock"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/executor"
-	mock_voter "github.com/sahil3vedi/chainsafe-core/chains/evm/executor/mock"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/executor/proposal"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor"
+	mock_voter "github.com/VaivalGithub/chainsafe-core/chains/evm/executor/mock"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor/proposal"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/stretchr/testify/suite"
 )
 

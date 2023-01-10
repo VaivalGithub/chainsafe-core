@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/executor"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/stretchr/testify/suite"
 )
 

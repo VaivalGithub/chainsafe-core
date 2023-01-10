@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/rs/zerolog/log"
 )
 

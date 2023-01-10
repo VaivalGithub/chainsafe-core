@@ -7,17 +7,17 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/consts"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/contracts"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/contracts/deposit"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/transactor"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/contracts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/contracts/deposit"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/executor/proposal"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
-	"github.com/sahil3vedi/chainsafe-core/types"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor/proposal"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/types"
 	"github.com/rs/zerolog/log"
 )
 

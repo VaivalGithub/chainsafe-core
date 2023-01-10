@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmgaspricer"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmgaspricer"
 
 	"github.com/spf13/cobra"
 )

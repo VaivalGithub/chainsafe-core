@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/sahil3vedi/chainsafe-core/logger"
+	"github.com/VaivalGithub/chainsafe-core/logger"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"

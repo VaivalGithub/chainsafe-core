@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
 
-	"github.com/sahil3vedi/chainsafe-core/keystore"
-	"github.com/sahil3vedi/chainsafe-core/types"
+	"github.com/VaivalGithub/chainsafe-core/keystore"
+	"github.com/VaivalGithub/chainsafe-core/types"
 
-	"github.com/sahil3vedi/chainsafe-core/crypto/secp256k1"
+	"github.com/VaivalGithub/chainsafe-core/crypto/secp256k1"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

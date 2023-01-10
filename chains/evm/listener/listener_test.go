@@ -5,9 +5,9 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/events"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/listener"
-	"github.com/sahil3vedi/chainsafe-core/relayer/message"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/events"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/listener"
+	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"

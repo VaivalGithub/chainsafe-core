@@ -3,10 +3,10 @@ package erc20
 import (
 	"math/big"
 
-	"github.com/sahil3vedi/chainsafe-core/crypto/secp256k1"
+	"github.com/VaivalGithub/chainsafe-core/crypto/secp256k1"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sahil3vedi/chainsafe-core/types"
+	"github.com/VaivalGithub/chainsafe-core/types"
 )
 
 //flag vars

@@ -4,11 +4,11 @@ import (
 	"math/big"
 	"testing"
 
-	evmgaspricer "github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmgaspricer"
-	mock_evmgaspricer "github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmgaspricer/mock"
+	evmgaspricer "github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmgaspricer"
+	mock_evmgaspricer "github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmgaspricer/mock"
 
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/sahil3vedi/chainsafe-core/keystore"
+	"github.com/VaivalGithub/chainsafe-core/keystore"
 
 	"github.com/ethereum/go-ethereum/common"
 

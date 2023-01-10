@@ -5,15 +5,15 @@ import (
 	"math/big"
 	"strconv"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/contracts/bridge"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/evmtransaction"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/transactor"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/initialize"
-	"github.com/sahil3vedi/chainsafe-core/util"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/contracts/bridge"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmtransaction"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/initialize"
+	"github.com/VaivalGithub/chainsafe-core/util"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/flags"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/logger"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/flags"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/logger"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

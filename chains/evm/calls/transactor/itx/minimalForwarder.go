@@ -9,9 +9,9 @@ import (
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"
 	signer "github.com/ethereum/go-ethereum/signer/core"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/contracts/forwarder"
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/calls/transactor"
-	"github.com/sahil3vedi/chainsafe-core/crypto/secp256k1"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/contracts/forwarder"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
+	"github.com/VaivalGithub/chainsafe-core/crypto/secp256k1"
 	"github.com/rs/zerolog/log"
 )
 

@@ -3,7 +3,7 @@ package erc721
 import (
 	"fmt"
 
-	"github.com/sahil3vedi/chainsafe-core/chains/evm/cli/flags"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/cli/flags"
 	"github.com/spf13/cobra"
 )
 

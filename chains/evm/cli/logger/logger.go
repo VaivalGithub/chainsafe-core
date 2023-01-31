@@ -27,7 +27,7 @@ func LoggerMetadata(cmdName string, flagSet *pflag.FlagSet) {
 
 	var cmdFlagsWithArgs string
 	flagSet.VisitAll(func(flag *pflag.Flag) {
-		if flag.Name != "privateKey" {
+		if flag.Name != cil.PrivateKeyFlagName {
 			cmdFlagsWithArgs += fmt.Sprintf("--%s=%q ", flag.Name, flag.Value)
 		}
 	})

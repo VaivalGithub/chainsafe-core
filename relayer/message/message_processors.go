@@ -28,6 +28,9 @@ func AdjustDecimalsForERC20AmountMessageProcessor(args ...interface{}) MessagePr
 		if !ok {
 			return errors.New("no destination decimals found at decimalsMap")
 		}
+		if len(m.Payload) == 0 {
+                return errors.New("payload of the Message is empty")
+		}
 		amountByte, ok := m.Payload[0].([]byte)
 		if !ok {
 			return errors.New("could not cast interface to byte slice")

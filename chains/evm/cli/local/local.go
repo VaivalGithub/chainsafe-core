@@ -79,9 +79,9 @@ ERC721: %s
 ERC721 Handler: %s
 Generic Handler: %s
 Asset Store: %s
-ERC20 resourceId: %s
-ERC721 resourceId %s
-Generic resourceId %s
+ERC20 resourceId: %x
+ERC721 resourceId %x
+Generic resourceId %x
 
 - Chain 2 -
 Bridge: %s
@@ -91,9 +91,9 @@ ERC721: %s
 ERC721 Handler: %s
 Generic Handler: %s
 Asset Store: %s
-ERC20 resourceId: %s
-ERC721 resourceId %s
-Generic resourceId %s
+ERC20 resourceId: %x
+ERC721 resourceId %x
+Generic resourceId %x
 
 ===============================================
 `,

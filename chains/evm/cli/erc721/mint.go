@@ -75,10 +75,9 @@ func ProcessMintFlags(cmd *cobra.Command, args []string) error {
 	Erc721Addr = common.HexToAddress(Erc721Address)
 
 	if !common.IsHexAddress(Dst) {
-		DstAddress = senderKeyPair.CommonAddress()
-	} else {
-		DstAddress = common.HexToAddress(Dst)
-	}
+		return fmt.Errorf(...)
+	} 
+	DstAddress = common.HexToAddress(Dst)
 
 	var ok bool
 	if TokenId, ok = big.NewInt(0).SetString(Token, 10); !ok {

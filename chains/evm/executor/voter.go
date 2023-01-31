@@ -51,11 +51,11 @@ type BridgeContract interface {
 	SimulateVoteProposal(proposal *proposal.Proposal) error
 	ProposalStatus(p *proposal.Proposal) (message.ProposalStatus, error)
 	GetThreshold() (uint8, error)
-	IsFeeClaimThresholdReached() (bool, error)
-	RelayerClaimFees(
-		destDomainID uint8,
-		opts transactor.TransactOptions,
-	) (*common.Hash, error)
+	// IsFeeClaimThresholdReached() (bool, error)
+	// RelayerClaimFees(
+	// 	destDomainID uint8,
+	// 	opts transactor.TransactOptions,
+	// ) (*common.Hash, error)
 }
 
 type EVMVoter struct {
@@ -255,23 +255,21 @@ func (v *EVMVoter) increaseProposalVoteCount(hash common.Hash, propID common.Has
 	v.pendingProposalVotes[propID]--
 }
 
-func (v *EVMVoter) FeeClaimByRelayer(p *message.Message) error {
-	hash, err := v.bridgeContract.RelayerClaimFees(p.Destination, transactor.TransactOptions{})
-	if err != nil {
-		log.Error().Err(err)
-		log.Debug().Msgf(" fee claim  %t", hash)
-		return nil
-	}
-	log.Debug().Msgf("fees claimed successfully")
-	return nil
-}
+// func (v *EVMVoter) FeeClaimByRelayer(p *message.Message) error {
+// 	hash, err := v.bridgeContract.RelayerClaimFees(p.Destination, transactor.TransactOptions{})
+// 	if err != nil {
+// 		log.Debug().Msgf(hash.String())
+// 	}
+// 	log.Debug().Msgf("fees claimed successfully")
+// 	return nil
+// }
 
-func (v *EVMVoter) IsFeeThresholdReached() bool {
-	val, err := v.bridgeContract.IsFeeClaimThresholdReached()
-	if err != nil {
-		log.Debug().Msgf("Error in fetch fee claim threshold")
-		return false
-	}
-	log.Debug().Msgf("Fetched fee claim threshold %t", val)
-	return val
-}
+// func (v *EVMVoter) IsFeeThresholdReached() bool {
+// 	val, err := v.bridgeContract.IsFeeClaimThresholdReached()
+// 	if err != nil {
+// 		log.Debug().Msgf("Error in fetch fee claim threshold")
+// 		return false
+// 	}
+// 	log.Debug().Msgf("Fetched fee claim threshold %t", val)
+// 	return val
+// }

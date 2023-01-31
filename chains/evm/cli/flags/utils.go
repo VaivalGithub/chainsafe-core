@@ -24,13 +24,13 @@ func GlobalFlagValues(cmd *cobra.Command) (string, uint64, *big.Int, *secp256k1.
 		return "", DefaultGasLimit, nil, nil, false, err
 	}
 
-	gasLimitInt, err := cmd.Flags().GetUint64("gas-limit")
+	gasLimitInt, err := cmd.Flags().GetUint64(cli.GasLimitFlagName)
 	if err != nil {
 		log.Error().Err(fmt.Errorf("gas limit error: %v", err))
 		return "", DefaultGasLimit, nil, nil, false, err
 	}
 
-	gasPriceInt, err := cmd.Flags().GetUint64("gas-price")
+	gasPriceInt, err := cmd.Flags().GetUint64(cli.GasPriceFlagName)
 	if err != nil {
 		log.Error().Err(fmt.Errorf("gas price error: %v", err))
 		return "", DefaultGasLimit, nil, nil, false, err
@@ -46,7 +46,7 @@ func GlobalFlagValues(cmd *cobra.Command) (string, uint64, *big.Int, *secp256k1.
 		return "", DefaultGasLimit, nil, nil, false, err
 	}
 
-	prepare, err := cmd.Flags().GetBool("prepare")
+	prepare, err := cmd.Flags().GetBool(cli.Prepare)
 	if err != nil {
 		log.Error().Err(fmt.Errorf("generate calldata error: %v", err))
 		return "", DefaultGasLimit, nil, nil, false, err
@@ -55,7 +55,7 @@ func GlobalFlagValues(cmd *cobra.Command) (string, uint64, *big.Int, *secp256k1.
 }
 
 func defineSender(cmd *cobra.Command) (*secp256k1.Keypair, error) {
-	privateKey, err := cmd.Flags().GetString("private-key")
+	privateKey, err := cmd.Flags().GetString(cli.PrivateKeyFlagName)
 	if err != nil {
 		return nil, err
 	}

@@ -74,7 +74,7 @@ func (t *signAndSendTransactor) Transact(to *common.Address, data []byte, opts t
 
 	_, err = t.client.WaitAndReturnTxReceipt(h)
 	if err != nil {
-		return &common.Hash{}, err
+		return &h, err
 	}
 
 	return &h, nil

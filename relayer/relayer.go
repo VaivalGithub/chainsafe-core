@@ -19,8 +19,8 @@ type RelayedChain interface {
 	PollEvents(ctx context.Context, sysErr chan<- error, msgChan chan *message.Message)
 	Write(message *message.Message) error
 	DomainID() uint8
-	CheckFeeClaim() bool
-	GetFeeClaim(msg *message.Message) error
+	// CheckFeeClaim() bool
+	// GetFeeClaim(msg *message.Message) error
 }
 
 func NewRelayer(chains []RelayedChain, metrics Metrics, messageProcessors ...message.MessageProcessor) *Relayer {
@@ -70,16 +70,7 @@ func (r *Relayer) route(m *message.Message) {
 		log.Error().Msgf("no resolver for destID %v to send message registered", m.Destination)
 		return
 	}
-	sorcChain, ok := r.registry[m.Source]
-	if !ok {
-		log.Error().Msgf("no resolver for destID %v to send message registered", m.Source)
-		return
-	}
-
-	if !ok {
-		log.Error().Msgf("no resolver for destID %v to send message registered", m.Destination)
-		return
-	}
+	
 
 	for _, mp := range r.messageProcessors {
 		if err := mp(m); err != nil {
@@ -90,13 +81,13 @@ func (r *Relayer) route(m *message.Message) {
 
 	log.Debug().Msgf("Sending message %+v to destination %v", m, m.Destination)
 	// // fee method here.
-	boolVal := destChain.CheckFeeClaim()
-	if boolVal {
-		if err := sorcChain.GetFeeClaim(m); err != nil {
-			log.Error().Msgf("Claiming fees Error %+w", err)
-			return
-		}
-	}
+	// boolVal := destChain.CheckFeeClaim()
+	// if boolVal {
+	// 	err := sorcChain.GetFeeClaim(m)
+	// 	if err != nil {
+	// 		log.Error().Msgf("Claiming fees Error %+w", err)
+	// 	}
+	// }
 	if err := destChain.Write(m); err != nil {
 		log.Error().Err(err).Msgf("writing message %+v", m)
 		return

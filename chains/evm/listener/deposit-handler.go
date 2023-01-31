@@ -72,12 +72,6 @@ func Erc20DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types.
 		err := errors.New("invalid calldata length: less than 84 bytes")
 		return nil, err
 	}
-	// Metadata Length Check for Byte Manipulations
-	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
-  	if int(metadataLen.Int64())+32 > len(calldata) { 
-    	err := errors.New("invalid metadata length") 
-    	return nil, err 
-  	} 
 
 	// @dev
 	// amount: first 32 bytes of calldata
@@ -90,6 +84,12 @@ func Erc20DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types.
 
 	// 32-64 is recipient address length
 	recipientAddressLength := big.NewInt(0).SetBytes(calldata[32:64])
+        
+        if int(recipientAddressLength.Int64())+32 > len(calldata) {
+        err := errors.New("invalid metadata length")
+        return nil, err
+       }
+
 
 	// 64 - (64 + recipient address length) is recipient address
 	recipientAddress := calldata[64:(64 + recipientAddressLength.Int64())]
@@ -118,15 +118,14 @@ func GenericDepositHandler(sourceID, destId uint8, nonce uint64, resourceID type
 		err := errors.New("invalid calldata length: less than 32 bytes")
 		return nil, err
 	}
-	// Metadata Length Check for Byte Manipulations
-	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
-  	if int(metadataLen.Int64())+32 > len(calldata) { 
-    	err := errors.New("invalid metadata length") 
-    	return nil, err 
-  	} 
 
 	// first 32 bytes are metadata length
 	metadataLen := big.NewInt(0).SetBytes(calldata[:32])
+	 if int(metadataLen.Int64())+32 > len(calldata) {
+        err := errors.New("invalid metadata length")
+        return nil, err
+       }
+	
 	metadata := calldata[32 : 32+metadataLen.Int64()]
 	payload := []interface{}{
 		metadata,
@@ -143,26 +142,31 @@ func Erc721DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types
 		err := errors.New("invalid calldata length: less than 84 bytes")
 		return nil, err
 	}
-	// Metadata Length Check for Byte Manipulations
-	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
-  	if int(metadataLen.Int64())+32 > len(calldata) { 
-    	err := errors.New("invalid metadata length") 
-    	return nil, err 
-  	} 
 
 	// first 32 bytes are tokenId
 	tokenId := calldata[:32]
 
 	// 32 - 64 is recipient address length
 	recipientAddressLength := big.NewInt(0).SetBytes(calldata[32:64])
+	if int(recipientAddressLength.Int64())+32 > len(calldata) {
+        err := errors.New("invalid metadata length")
+        return nil, err
+       }
 
 	// 64 - (64 + recipient address length) is recipient address
 	recipientAddress := calldata[64:(64 + recipientAddressLength.Int64())]
-
+        if int(recipientAddress.Int64())+32 > len(calldata) {
+        err := errors.New("invalid metadata length")
+        return nil, err
+       }
 	// (64 + recipient address length) - ((64 + recipient address length) + 32) is metadata length
 	metadataLength := big.NewInt(0).SetBytes(
 		calldata[(64 + recipientAddressLength.Int64()):((64 + recipientAddressLength.Int64()) + 32)],
 	)
+	 if int(metadataLength.Int64())+32 > len(calldata) {
+        err := errors.New("invalid metadata length")
+        return nil, err
+       }
 	// ((64 + recipient address length) + 32) - ((64 + recipient address length) + 32 + metadata length) is metadata
 	var metadata []byte
 	var metadataStart int64

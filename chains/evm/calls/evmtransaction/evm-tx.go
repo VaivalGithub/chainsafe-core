@@ -44,8 +44,10 @@ func NewTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit 
 	// If there is more than one gas price returned we are sending with DynamicFeeTx's
 	if len(gasPrices) > 1 {
 		return newDynamicFeeTransaction(nonce, to, amount, gasLimit, gasPrices[0], gasPrices[1], data), nil
-	} else {
+	} else if len(gasPrices) == 1{
 		return newTransaction(nonce, to, amount, gasLimit, gasPrices[0], data), nil
+	} else {
+          return &TX{}, fmt.Errorf("gasPrices error")
 	}
 }
 

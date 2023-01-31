@@ -61,7 +61,7 @@ var accountAddr common.Address
 
 func ValidateBalanceFlags(cmd *cobra.Command, args []string) error {
 	if !common.IsHexAddress(Erc20Address) {
-		return fmt.Errorf("invalid recipient address %s", Erc20Address)
+		return fmt.Errorf("invalid ERC20  address %s", Erc20Address)
 	}
 	if !common.IsHexAddress(AccountAddress) {
 		return fmt.Errorf("invalid account address %s", AccountAddress)

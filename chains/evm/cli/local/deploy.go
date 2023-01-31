@@ -98,9 +98,9 @@ func SetupEVMBridge(
 		return BridgeConfig{}, err
 	}
 
-	resourceIDERC20 := calls.SliceTo32Bytes(common.LeftPadBytes([]byte{0}, 31))
+	resourceIDERC20 := calls.SliceTo32Bytes(common.LeftPadBytes([]byte{0}, 32))
 	resourceIDGenericHandler := calls.SliceTo32Bytes(common.LeftPadBytes([]byte{1}, 32))
-	resourceIDERC721 := calls.SliceTo32Bytes(common.LeftPadBytes([]byte{2}, 31))
+	resourceIDERC721 := calls.SliceTo32Bytes(common.LeftPadBytes([]byte{2}, 32))
 
 	conf := BridgeConfig{
 		BridgeAddr: bridgeContractAddress,

@@ -22,15 +22,15 @@ func NewStaticGasPriceDeterminant(client evmgaspricer.GasPriceClient, opts *evmg
 func (gasPricer *StaticGasPriceDeterminant) GasPrice(priority *uint8) ([]*big.Int, error) {
 	var gasPrice []*big.Int
 	switch *priority {
-	// slow
-	case 0:
-		gasPrice = []*big.Int{big.NewInt(50000000000)}
+	// medium
+	case 1:
+		gasPrice = []*big.Int{big.NewInt(80000000000)}
 	// fast
 	case 2:
 		gasPrice = []*big.Int{big.NewInt(140000000000)}
-	// medium
+	// slow
 	default:
-		gasPrice = []*big.Int{big.NewInt(80000000000)}
+		gasPrice = []*big.Int{big.NewInt(50000000000)}
 	}
 	return gasPrice, nil
 }

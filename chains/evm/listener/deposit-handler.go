@@ -155,10 +155,10 @@ func Erc721DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types
 
 	// 64 - (64 + recipient address length) is recipient address
 	recipientAddress := calldata[64:(64 + recipientAddressLength.Int64())]
-        if int(recipientAddress.Int64())+32 > len(calldata) {
+    if int(recipientAddressLength.Int64())+32 > len(calldata) {
         err := errors.New("invalid metadata length")
         return nil, err
-       }
+    }
 	// (64 + recipient address length) - ((64 + recipient address length) + 32) is metadata length
 	metadataLength := big.NewInt(0).SetBytes(
 		calldata[(64 + recipientAddressLength.Int64()):((64 + recipientAddressLength.Int64()) + 32)],

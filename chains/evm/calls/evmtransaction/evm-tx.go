@@ -3,6 +3,7 @@ package evmtransaction
 import (
 	"crypto/ecdsa"
 	"math/big"
+	"fmt"
 
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmclient"
 
@@ -47,7 +48,7 @@ func NewTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit 
 	} else if len(gasPrices) == 1{
 		return newTransaction(nonce, to, amount, gasLimit, gasPrices[0], data), nil
 	} else {
-          return &TX{}, fmt.Errorf("gasPrices error")
+        return &TX{}, fmt.Errorf("gasPrices error")
 	}
 }
 

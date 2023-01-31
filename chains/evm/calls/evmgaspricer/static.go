@@ -49,7 +49,7 @@ func (gasPricer *StaticGasPriceDeterminant) GasPrice(priority *uint8) ([]*big.In
 			}
 		}
 	}
-	gasPrices = []*big.Int{gp}
+	gasPrices := []*big.Int{gp}
 	//gasPrices := make([]*big.Int, 1)
 	//gasPrices[0] = gp
 	return gasPrices, nil

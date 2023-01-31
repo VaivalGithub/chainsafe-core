@@ -72,6 +72,12 @@ func Erc20DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types.
 		err := errors.New("invalid calldata length: less than 84 bytes")
 		return nil, err
 	}
+	// Metadata Length Check for Byte Manipulations
+	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
+  	if int(metadataLen.Int64())+32 > len(calldata) { 
+    	err := errors.New("invalid metadata length") 
+    	return nil, err 
+  	} 
 
 	// @dev
 	// amount: first 32 bytes of calldata
@@ -112,6 +118,12 @@ func GenericDepositHandler(sourceID, destId uint8, nonce uint64, resourceID type
 		err := errors.New("invalid calldata length: less than 32 bytes")
 		return nil, err
 	}
+	// Metadata Length Check for Byte Manipulations
+	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
+  	if int(metadataLen.Int64())+32 > len(calldata) { 
+    	err := errors.New("invalid metadata length") 
+    	return nil, err 
+  	} 
 
 	// first 32 bytes are metadata length
 	metadataLen := big.NewInt(0).SetBytes(calldata[:32])
@@ -131,6 +143,12 @@ func Erc721DepositHandler(sourceID, destId uint8, nonce uint64, resourceID types
 		err := errors.New("invalid calldata length: less than 84 bytes")
 		return nil, err
 	}
+	// Metadata Length Check for Byte Manipulations
+	metadataLen := big.NewInt(0).SetBytes(calldata[:32]) 
+  	if int(metadataLen.Int64())+32 > len(calldata) { 
+    	err := errors.New("invalid metadata length") 
+    	return nil, err 
+  	} 
 
 	// first 32 bytes are tokenId
 	tokenId := calldata[:32]

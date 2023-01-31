@@ -24,7 +24,7 @@ type ProposalExecutor interface {
 	IsFeeThresholdReached() bool
 }
 
-// EVMChain is struct that aggregates all data required for
+// EVMChain is struct that aggregates all data required for interacting with the domain and the target chains.
 type EVMChain struct {
 	listener   EventListener
 	writer     ProposalExecutor

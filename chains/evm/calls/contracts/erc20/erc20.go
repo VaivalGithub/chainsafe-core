@@ -52,7 +52,7 @@ func (c *ERC20Contract) ApproveTokens(
 	amount *big.Int,
 	opts transactor.TransactOptions,
 ) (*common.Hash, error) {
-	log.Debug().Msgf("Approving %s tokens for %s", target.String(), amount.String())
+	log.Debug().Msgf("Approving %s tokens for %s", amount.String(), target.String())
 	return c.ExecuteTransaction("approve", opts, target, amount)
 }
 

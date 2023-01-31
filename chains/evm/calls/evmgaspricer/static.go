@@ -34,6 +34,7 @@ func (gasPricer *StaticGasPriceDeterminant) SetOpts(opts *GasPricerOpts) {
 func (gasPricer *StaticGasPriceDeterminant) GasPrice(priority *uint8) ([]*big.Int, error) {
 	gp, err := gasPricer.client.SuggestGasPrice(context.TODO())
 	log.Debug().Msgf("Suggested GP %s", gp.String())
+	gp = gp.Add(gp, big.NewInt(int64(*priority)))
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +48,6 @@ func (gasPricer *StaticGasPriceDeterminant) GasPrice(priority *uint8) ([]*big.In
 			}
 		}
 	}
-	gasPrices := make([]*big.Int, 1)
-	gasPrices[0] = gp
+	gasPrices := []*big.Int{gp}
 	return gasPrices, nil
 }

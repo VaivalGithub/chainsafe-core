@@ -24,6 +24,7 @@ func LoggerMetadata(cmdName string, flagSet *pflag.FlagSet) {
 	if err != nil {
 		log.Error().Err(fmt.Errorf("failed to create cli log file: %v", err))
 	}
+	defer file.Close()
 
 	var cmdFlagsWithArgs string
 	flagSet.VisitAll(func(flag *pflag.Flag) {

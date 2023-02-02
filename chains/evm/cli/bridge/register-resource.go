@@ -42,8 +42,7 @@ var registerResourceCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessRegisterResourceFlags(cmd, args)
-		return err
+		return ProcessRegisterResourceFlags(cmd, args)
 	},
 }
 

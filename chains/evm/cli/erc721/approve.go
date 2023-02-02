@@ -44,8 +44,7 @@ var approveCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessApproveFlags(cmd, args)
-		return err
+		return ProcessApproveFlags(cmd, args)
 	},
 }
 

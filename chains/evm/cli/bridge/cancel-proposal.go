@@ -50,19 +50,6 @@ func ValidateCancelProposalFlags(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func cancelProposal(cmd *cobra.Command, args []string) error {
-
-	log.Debug().Msgf(`
-Cancel propsal
-Bridge address: %s
-Chain ID: %d
-Deposit nonce: %d
-DataHash: %s
-`, Bridge, DomainID, DepositNonce, DataHash)
-	return nil
-}
-
-/*
 func cancelProposal(cctx *cli.Context) error {
 	url := cctx.String("url")
 	gasLimit := cctx.Uint64("gasLimit")
@@ -90,6 +77,19 @@ func cancelProposal(cctx *cli.Context) error {
 		return err
 	}
 	log.Info().Msgf("Setting proposal with domain ID %v and deposit nonce %v status to 'Cancelled", domainID, depositNonce)
+	return nil
+}
+
+/*
+func cancelProposal(cmd *cobra.Command, args []string) error {
+
+	log.Debug().Msgf(`
+Cancel propsal
+Bridge address: %s
+Chain ID: %d
+Deposit nonce: %d
+DataHash: %s
+`, Bridge, DomainID, DepositNonce, DataHash)
 	return nil
 }
 */

@@ -40,8 +40,7 @@ var DeployEVM = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		err = ProcessDeployFlags(cmd, args)
-		return err
+		return ProcessDeployFlags(cmd, args)
 	},
 }
 

@@ -43,8 +43,7 @@ var voteProposalCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessVoteProposalFlags(cmd, args)
-		return err
+		return ProcessVoteProposalFlags(cmd, args)
 	},
 }
 

@@ -45,8 +45,7 @@ var depositCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessDepositFlags(cmd, args)
-		return err
+		return ProcessDepositFlags(cmd, args)
 	},
 }
 

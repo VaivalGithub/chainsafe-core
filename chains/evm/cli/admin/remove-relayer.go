@@ -57,7 +57,6 @@ Bridge address: %s`, Relayer, Bridge)
 	return nil
 }
 
-/*
 func removeRelayer(cctx *cli.Context) error {
 	url := cctx.String("url")
 	gasLimit := cctx.Uint64("gasLimit")
@@ -86,4 +85,3 @@ func removeRelayer(cctx *cli.Context) error {
 	log.Info().Msgf("Address %s is relayer now", relayerAddress.String())
 	return nil
 }
-*/

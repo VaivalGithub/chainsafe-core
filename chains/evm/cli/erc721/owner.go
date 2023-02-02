@@ -43,8 +43,7 @@ var ownerCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessOwnerFlags(cmd, args)
-		return err
+		return ProcessOwnerFlags(cmd, args)
 	},
 }
 

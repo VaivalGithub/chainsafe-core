@@ -42,8 +42,7 @@ var addMinterCmd = &cobra.Command{
 			return err
 		}
 
-		err = ProcessAddMinterFlags(cmd, args)
-		return err
+		return ProcessAddMinterFlags(cmd, args)
 	},
 }
 

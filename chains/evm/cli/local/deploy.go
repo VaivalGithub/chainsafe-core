@@ -118,17 +118,17 @@ func SetupEVMBridge(
 		Erc721ResourceID:  resourceIDERC721,
 	}
 
-	err = SetupERC20Handler(bridgeContract, erc20Contract, mintTo, conf, resourceIDERC20)
+	err = setupERC20Handler(bridgeContract, erc20Contract, mintTo, conf, resourceIDERC20)
 	if err != nil {
 		return BridgeConfig{}, err
 	}
 
-	err = SetupERC721Handler(bridgeContract, erc721Contract, conf, resourceIDERC721)
+	err = setupERC721Handler(bridgeContract, erc721Contract, conf, resourceIDERC721)
 	if err != nil {
 		return BridgeConfig{}, err
 	}
 
-	err = SetupGenericHandler(bridgeContract, conf, resourceIDGenericHandler)
+	err = setupGenericHandler(bridgeContract, conf, resourceIDGenericHandler)
 	if err != nil {
 		return BridgeConfig{}, err
 	}
@@ -202,7 +202,7 @@ func deployErc721(
 	return erc721Contract, erc721ContractAddress, erc721HandlerContractAddress, nil
 }
 
-func SetupERC20Handler(
+func setupERC20Handler(
 	bridgeContract *bridge.BridgeContract, erc20Contract *erc20.ERC20Contract, mintTo common.Address, conf BridgeConfig, resourceID types.ResourceID,
 ) error {
 	_, err := bridgeContract.AdminSetResource(
@@ -235,7 +235,7 @@ func SetupERC20Handler(
 	return nil
 }
 
-func SetupGenericHandler(bridgeContract *bridge.BridgeContract, conf BridgeConfig, resourceID types.ResourceID) error {
+func setupGenericHandler(bridgeContract *bridge.BridgeContract, conf BridgeConfig, resourceID types.ResourceID) error {
 	_, err := bridgeContract.AdminSetGenericResource(
 		conf.GenericHandlerAddr,
 		resourceID,
@@ -251,7 +251,7 @@ func SetupGenericHandler(bridgeContract *bridge.BridgeContract, conf BridgeConfi
 	return nil
 }
 
-func SetupERC721Handler(bridgeContract *bridge.BridgeContract, erc721Contract *erc721.ERC721Contract, conf BridgeConfig, resourceID types.ResourceID) error {
+func setupERC721Handler(bridgeContract *bridge.BridgeContract, erc721Contract *erc721.ERC721Contract, conf BridgeConfig, resourceID types.ResourceID) error {
 	_, err := bridgeContract.AdminSetResource(conf.Erc721HandlerAddr, resourceID, conf.Erc721Addr, transactor.TransactOptions{GasLimit: 2000000})
 	if err != nil {
 		return err

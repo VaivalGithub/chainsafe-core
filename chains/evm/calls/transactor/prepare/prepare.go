@@ -8,9 +8,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-type Transactor interface {
-	Transact(to *common.Address, data []byte, opts transactor.TransactOptions) (*common.Hash, error)
-}
 type prepareTransactor struct{}
 
 // Initializes PrepareTransactor which is used when --prepare flag value is set as true from CLI

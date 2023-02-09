@@ -50,5 +50,5 @@ func (c *ForwarderContract) PrepareExecute(
 	forwardReq ForwardRequest,
 	sig []byte,
 ) ([]byte, error) {
-	return c.ABI.Pack("execute", forwardReq, sig)
+	return c.PackMethod("execute", forwardReq, sig)
 }

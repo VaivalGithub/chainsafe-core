@@ -17,10 +17,10 @@ const DefaultDeployGasLimit = 6000000
 
 type Contract struct {
 	contractAddress common.Address
-	ABI             abi.ABI
+	abi             abi.ABI
 	bytecode        []byte
 	client          calls.ContractCallerDispatcher
-	transactor.Transactor
+	transactor		transactor.Transactor
 }
 
 func NewContract(

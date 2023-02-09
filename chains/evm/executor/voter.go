@@ -183,17 +183,14 @@ func (v *EVMVoter) shouldVoteForProposal(prop *proposal.Proposal, tries int) (bo
 }
 
 // repetitiveSimulateVote repeatedly tries(5 times) to simulate vore proposal call until it succeeds
-func (v *EVMVoter) repetitiveSimulateVote(prop *proposal.Proposal, tries int) error {
-	err := v.bridgeContract.SimulateVoteProposal(prop)
-	if err != nil {
-		if tries < maxSimulateVoteChecks {
-			tries++
-			return v.repetitiveSimulateVote(prop, tries)
-		}
-		return err
-	} else {
-		return nil
-	}
+func (v *EVMVoter) repetitiveSimulateVote(prop *proposal.Proposal, tries int) (err error) { 
+	for i := 0;i < tries; i++ { 
+		err = v.bridgeContract.SimulateVoteProposal(prop) 
+		if err == nil { 
+		  	return  
+		} 
+	} 
+	return
 }
 
 // trackProposalPendingVotes tracks pending voteProposal txs from

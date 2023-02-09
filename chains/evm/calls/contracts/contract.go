@@ -17,7 +17,7 @@ const DefaultDeployGasLimit = 6000000
 
 type Contract struct {
 	contractAddress common.Address
-	abi
+	abi				abi.ABI
 	bytecode        []byte
 	client          calls.ContractCallerDispatcher
 	transactor		

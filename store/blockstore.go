@@ -71,7 +71,7 @@ func (bs *BlockStore) GetStartBlock(domainID uint8, startBlock *big.Int, latest 
 	}
 
 	if latestBlock.Cmp(startBlock) == 1 {
-		return latestBlock+big.NewInt(1), nil
+		return latestBlock.Add(latestBlock, big.NewInt(1)), nil
 	} else {
 		return startBlock, nil
 	}

@@ -53,7 +53,7 @@ func (c *Contract) PackMethod(method string, args ...interface{}) ([]byte, error
 }
 
 func (c *Contract) UnpackResult(method string, output []byte) ([]interface{}, error) {
-	res, err := c.ABI.Unpack(method, output)
+	res, err := c.abi.Unpack(method, output)
 	if err != nil {
 		log.Error().Err(fmt.Errorf("unpack output error: %v", err))
 		return nil, err
@@ -66,7 +66,7 @@ func (c *Contract) ExecuteTransaction(method string, opts transactor.TransactOpt
 	if err != nil {
 		return nil, err
 	}
-	h, err := c.Transact(&c.contractAddress, input, opts)
+	h, err := transactor.Transact(&c.contractAddress, input, opts)
 	if err != nil {
 		log.Error().
 			Str("contract", c.contractAddress.String()).
@@ -115,7 +115,7 @@ func (c *Contract) DeployContract(params ...interface{}) (common.Address, error)
 		return common.Address{}, err
 	}
 	opts := transactor.TransactOptions{GasLimit: DefaultDeployGasLimit}
-	hash, err := c.Transact(nil, append(c.bytecode, input...), opts)
+	hash, err := transactor.Transact(nil, append(c.bytecode, input...), opts)
 	if err != nil {
 		return common.Address{}, err
 	}

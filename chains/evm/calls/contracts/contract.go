@@ -66,7 +66,7 @@ func (c *Contract) ExecuteTransaction(method string, opts transactor.TransactOpt
 	if err != nil {
 		return nil, err
 	}
-	h, err := transactor.Transact(&c.contractAddress, input, opts)
+	h, err := c.transactor.Transact(&c.contractAddress, input, opts)
 	if err != nil {
 		log.Error().
 			Str("contract", c.contractAddress.String()).
@@ -115,7 +115,7 @@ func (c *Contract) DeployContract(params ...interface{}) (common.Address, error)
 		return common.Address{}, err
 	}
 	opts := transactor.TransactOptions{GasLimit: DefaultDeployGasLimit}
-	hash, err := transactor.Transact(nil, append(c.bytecode, input...), opts)
+	hash, err := c.transactor.Transact(nil, append(c.bytecode, input...), opts)
 	if err != nil {
 		return common.Address{}, err
 	}

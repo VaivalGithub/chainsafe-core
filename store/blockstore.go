@@ -55,7 +55,7 @@ func (bs *BlockStore) GetLastStoredBlock(domainID uint8) (*big.Int, error) {
 }
 
 // GetStartBlock queries the blockstore for the latest known block. If the latest block is
-// greater than configured startBlock, then startBlock is replaced with the latest known block.
+// greater than configured startBlock, then startBlock is replaced with the block right after the latest known block.
 func (bs *BlockStore) GetStartBlock(domainID uint8, startBlock *big.Int, latest bool, fresh bool) (*big.Int, error) {
 	if latest {
 		return nil, nil
@@ -71,7 +71,7 @@ func (bs *BlockStore) GetStartBlock(domainID uint8, startBlock *big.Int, latest 
 	}
 
 	if latestBlock.Cmp(startBlock) == 1 {
-		return latestBlock, nil
+		return latestBlock+1, nil
 	} else {
 		return startBlock, nil
 	}

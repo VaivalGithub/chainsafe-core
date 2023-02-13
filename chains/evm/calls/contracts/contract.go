@@ -44,7 +44,7 @@ func (c *Contract) ContractAddress() *common.Address {
 }
 
 func (c *Contract) PackMethod(method string, args ...interface{}) ([]byte, error) {
-	input, err := c.PackMethod(method, args...)
+	input, err := c.abi.Pack(method, args...)
 	if err != nil {
 		log.Error().Err(fmt.Errorf("pack method error: %v", err))
 		return []byte{}, err

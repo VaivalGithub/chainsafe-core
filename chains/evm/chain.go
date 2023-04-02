@@ -33,6 +33,8 @@ type EVMChain struct {
 }
 
 func NewEVMChain(listener EventListener, writer ProposalExecutor, blockstore *store.BlockStore, config *chain.EVMConfig) *EVMChain {
+	fmt.Printf("Initialising EVM Chain...")
+	fmt.Printf("Passed Config: [%+v\n]", config)
 	return &EVMChain{listener: listener, writer: writer, blockstore: blockstore, config: config}
 }
 

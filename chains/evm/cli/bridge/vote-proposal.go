@@ -94,6 +94,9 @@ func VoteProposalCmd(cmd *cobra.Command, args []string, voter Voter) error {
 		return err
 	}
 
+	fmt.Printf("Calling Vote Proposal...")
+	fmt.Printf("Transactor Options: [%+v\n]", transactor.TransactOptions{})
+
 	h, err := voter.VoteProposal(prop, transactor.TransactOptions{})
 	if err != nil {
 		return err

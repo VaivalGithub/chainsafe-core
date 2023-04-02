@@ -108,7 +108,7 @@ func NewVoter(mh MessageHandler, client ChainClient, bridgeContract BridgeContra
 
 // Execute checks if relayer already voted and is threshold
 // satisfied and casts a vote if it isn't.
-func (v *EVMVoter) Execute(m *message.Message) error {
+func (v *EVMVoter) Execute(m *message.Message, opts transactor.TransactOptions) error {
 	prop, err := v.mh.HandleMessage(m)
 	if err != nil {
 		return err
@@ -143,9 +143,9 @@ func (v *EVMVoter) Execute(m *message.Message) error {
 	// first step to resolve this would be to fetch the config of the said chain
 	// since the EVMVoter abstraction does not have contain chain config it has to be passed as a param in the Execute function
 
-	fmt.Printf("VoteProposal OPTS BEING PASSED: [%+v\n]", transactor.TransactOptions{Priority: prop.Metadata.Priority})
+	fmt.Printf("VoteProposal OPTS BEING PASSED: [%+v\n]", opts)
 
-	hash, err := v.bridgeContract.VoteProposal(prop, transactor.TransactOptions{Priority: prop.Metadata.Priority})
+	hash, err := v.bridgeContract.VoteProposal(prop, opts)
 	if err != nil {
 		return fmt.Errorf("voting failed. Err: %w", err)
 	}

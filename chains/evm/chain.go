@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
 	"github.com/VaivalGithub/chainsafe-core/config/chain"
 	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/VaivalGithub/chainsafe-core/store"
@@ -19,7 +20,7 @@ type EventListener interface {
 }
 
 type ProposalExecutor interface {
-	Execute(message *message.Message) error
+	Execute(message *message.Message, opts transactor.TransactOptions) error
 	// FeeClaimByRelayer(p *message.Message) error
 	// IsFeeThresholdReached() bool
 }
@@ -61,6 +62,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 	// fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
 	// the EVMChain contains the config. Let's log it.
 	fmt.Printf("\nChain Config for VoteProposal: [%+v]\n", c.config)
+
 	/*
 		TransactorOptions interface for reference
 		type TransactOptions struct {
@@ -72,7 +74,10 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			Priority uint8
 		}
 	*/
-	return c.writer.Execute(msg)
+	return c.writer.Execute(msg, transactor.TransactOptions{
+		GasLimit: c.config.GasLimit.Uint64(),
+		GasPrice: c.config.MaxGasPrice,
+	})
 }
 
 func (c *EVMChain) DomainID() uint8 {

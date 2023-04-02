@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"strconv"
 	"strings"
+	"fmt"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
@@ -225,6 +226,7 @@ func (c *BridgeContract) VoteProposal(
 		Str("resourceID", hexutil.Encode(proposal.ResourceId[:])).
 		Str("handler", proposal.HandlerAddress.String()).
 		Msgf("Vote proposal")
+	fmt.Printf("OPTS [%+v\n]", opts)
 	return c.ExecuteTransaction(
 		"voteProposal",
 		opts,

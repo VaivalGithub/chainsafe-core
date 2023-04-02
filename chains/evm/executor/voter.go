@@ -73,6 +73,7 @@ type EVMVoter struct {
 // for transactions that will fail.
 // Currently, officially supported only by Geth nodes.
 func NewVoterWithSubscription(mh MessageHandler, client ChainClient, bridgeContract BridgeContract) (*EVMVoter, error) {
+	fmt.Printf("\nCreating NewVoterWithSubscription...\n")
 	voter := &EVMVoter{
 		mh:                   mh,
 		client:               client,
@@ -96,6 +97,7 @@ func NewVoterWithSubscription(mh MessageHandler, client ChainClient, bridgeContr
 // for nodes that don't support pending transaction subscription and will vote
 // on proposals that already satisfy threshold.
 func NewVoter(mh MessageHandler, client ChainClient, bridgeContract BridgeContract) *EVMVoter {
+	fmt.Printf("\nCreating NewVoter...\n")
 	return &EVMVoter{
 		mh:                   mh,
 		client:               client,

@@ -58,6 +58,7 @@ func (c *EVMChain) PollEvents(ctx context.Context, sysErr chan<- error, msgChan 
 }
 
 func (c *EVMChain) Write(msg *message.Message) error {
+	fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
 	return c.writer.Execute(msg)
 }
 

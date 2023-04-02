@@ -136,6 +136,9 @@ func (v *EVMVoter) Execute(m *message.Message) error {
 		return err
 	}
 
+	fmt.Printf("VoteProposal OPTS AVAILABLE: [%+v\n]", transactor.TransactOptions{})
+	fmt.Printf("VoteProposal OPTS BEING PASSED: [%+v\n]", transactor.TransactOptions{Priority: prop.Metadata.Priority})
+
 	hash, err := v.bridgeContract.VoteProposal(prop, transactor.TransactOptions{Priority: prop.Metadata.Priority})
 	if err != nil {
 		return fmt.Errorf("voting failed. Err: %w", err)

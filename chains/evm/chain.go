@@ -58,7 +58,20 @@ func (c *EVMChain) PollEvents(ctx context.Context, sysErr chan<- error, msgChan 
 }
 
 func (c *EVMChain) Write(msg *message.Message) error {
-	fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
+	// fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
+	// the EVMChain contains the config. Let's log it.
+	fmt.Printf("\nChain Config for VoteProposal: [%+v]\n", c.config)
+	/*
+		TransactorOptions interface for reference
+		type TransactOptions struct {
+			GasLimit uint64
+			GasPrice *big.Int
+			Value    *big.Int
+			Nonce    *big.Int
+			ChainID  *big.Int
+			Priority uint8
+		}
+	*/
 	return c.writer.Execute(msg)
 }
 

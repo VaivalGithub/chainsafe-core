@@ -11,15 +11,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	ethereumTypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor/proposal"
 	"github.com/VaivalGithub/chainsafe-core/relayer/message"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
+	ethereumTypes "github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/rs/zerolog/log"
 )
 
@@ -139,6 +139,10 @@ func (v *EVMVoter) Execute(m *message.Message) error {
 	}
 
 	fmt.Printf("VoteProposal OPTS AVAILABLE: [%+v\n]", transactor.TransactOptions{})
+	// the available transactor OPTS are incorrect
+	// first step to resolve this would be to fetch the config of the said chain
+	// since the EVMVoter abstraction does not have contain chain config it has to be passed as a param in the Execute function
+
 	fmt.Printf("VoteProposal OPTS BEING PASSED: [%+v\n]", transactor.TransactOptions{Priority: prop.Metadata.Priority})
 
 	hash, err := v.bridgeContract.VoteProposal(prop, transactor.TransactOptions{Priority: prop.Metadata.Priority})
@@ -188,13 +192,13 @@ func (v *EVMVoter) shouldVoteForProposal(prop *proposal.Proposal, tries int) (bo
 }
 
 // repetitiveSimulateVote repeatedly tries(5 times) to simulate vore proposal call until it succeeds
-func (v *EVMVoter) repetitiveSimulateVote(prop *proposal.Proposal, tries int) (err error) { 
-	for i := 0;i < tries; i++ { 
-		err = v.bridgeContract.SimulateVoteProposal(prop) 
-		if err == nil { 
-		  	return  
-		} 
-	} 
+func (v *EVMVoter) repetitiveSimulateVote(prop *proposal.Proposal, tries int) (err error) {
+	for i := 0; i < tries; i++ {
+		err = v.bridgeContract.SimulateVoteProposal(prop)
+		if err == nil {
+			return
+		}
+	}
 	return
 }
 

@@ -84,20 +84,20 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		For this we need a method that returns the gas prices for all chains dynamically.
 	*/
 	fmt.Printf("\nCalculating GasPrice and GasLimit...\n")
-	provider, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
+	_, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
 	if err != nil {
-		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values: %w \n", err)
+		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values: %+v \n", err)
 	} else {
 		// Create a new HTTP request
 		req, err := http.NewRequest("GET", c.config.GeneralChainConfig.EgsApi, nil)
 		if err != nil {
-			fmt.Errorf("\nError creating HTTP request for fetching gas: %w \n", err)
+			fmt.Errorf("\nError creating HTTP request for fetching gas: %+v \n", err)
 		}
 		// Send the HTTP request and get the response
 		gasProvider := http.DefaultClient
 		resp, err := gasProvider.Do(req)
 		if err != nil {
-			fmt.Errorf("\nError fetching gas: %w \n", err)
+			fmt.Errorf("\nError fetching gas: %+v \n", err)
 		}
 		defer resp.Body.Close()
 		// Parse the JSON response body

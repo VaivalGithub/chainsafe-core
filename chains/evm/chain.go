@@ -112,9 +112,10 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		maxFastGasWei := maxFastGas * 1000000000
 		// Execute Txn with new gas fees
 		// We are not passing the gas price for now
+		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", c.config.GasLimit.Uint64(), big.NewInt(int64(maxFastGasWei)))
 		return c.writer.Execute(msg, transactor.TransactOptions{
-			GasLimit: uint64(maxFastGasWei),
-			GasPrice: c.config.MaxGasPrice,
+			GasLimit: c.config.GasLimit.Uint64(),
+			GasPrice: big.NewInt(int64(maxFastGasWei)),
 		})
 	}
 	// the EVMChain contains the config. Let's log it.

@@ -138,11 +138,7 @@ func (v *EVMVoter) Execute(m *message.Message, opts transactor.TransactOptions) 
 		return err
 	}
 
-	fmt.Printf("VoteProposal OPTS AVAILABLE: [%+v\n]", transactor.TransactOptions{})
-	// the available transactor OPTS are incorrect
-	// first step to resolve this would be to fetch the config of the said chain
 	// since the EVMVoter abstraction does not have contain chain config it has to be passed as a param in the Execute function
-
 	fmt.Printf("VoteProposal OPTS BEING PASSED: [%+v\n]", opts)
 
 	hash, err := v.bridgeContract.VoteProposal(prop, opts)

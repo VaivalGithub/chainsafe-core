@@ -64,8 +64,6 @@ func (c *EVMChain) PollEvents(ctx context.Context, sysErr chan<- error, msgChan 
 
 func (c *EVMChain) Write(msg *message.Message) error {
 	// fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
-	// the EVMChain contains the config. Let's log it.
-	fmt.Printf("\nChain Config for VoteProposal: [%+v]\n", c.config)
 
 	/*
 		TransactorOptions interface for reference
@@ -86,33 +84,41 @@ func (c *EVMChain) Write(msg *message.Message) error {
 	fmt.Printf("\nCalculating GasPrice and GasLimit...\n")
 	_, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
 	if err != nil {
-		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values: %+v \n", err)
+		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values:", err)
+
 	} else {
 		// Create a new HTTP request
 		req, err := http.NewRequest("GET", c.config.GeneralChainConfig.EgsApi, nil)
 		if err != nil {
-			fmt.Errorf("\nError creating HTTP request for fetching gas: %+v \n", err)
+			fmt.Errorf("\nError creating HTTP request for fetching gas:", err)
 		}
 		// Send the HTTP request and get the response
 		gasProvider := http.DefaultClient
 		resp, err := gasProvider.Do(req)
 		if err != nil {
-			fmt.Errorf("\nError fetching gas: %+v \n", err)
+			fmt.Errorf("\nError fetching gas:", err)
 		}
 		defer resp.Body.Close()
 		// Parse the JSON response body
 		var dataJson map[string]interface{}
 		err = json.NewDecoder(resp.Body).Decode(&dataJson)
 		if err != nil {
-			fmt.Println("Error decoding JSON response:", err)
+			fmt.Errorf("\nError decoding JSON response:", err)
 		}
 		// Get the "fast" gas price from the JSON data
 		fastGas := dataJson["fast"].(map[string]interface{})
 		maxFastGas := fastGas["maxFee"].(float64)
 		fmt.Println("Max Fast Gas:", maxFastGas)
-
+		maxFastGasWei := maxFastGas * 1000000000
+		// Execute Txn with new gas fees
+		// We are not passing the gas price for now
+		return c.writer.Execute(msg, transactor.TransactOptions{
+			GasLimit: uint64(maxFastGasWei),
+			GasPrice: c.config.MaxGasPrice,
+		})
 	}
-
+	// the EVMChain contains the config. Let's log it.
+	fmt.Printf("\nDefault Config for VoteProposal: [%+v]\n", c.config)
 	return c.writer.Execute(msg, transactor.TransactOptions{
 		GasLimit: c.config.GasLimit.Uint64(),
 		GasPrice: c.config.MaxGasPrice,

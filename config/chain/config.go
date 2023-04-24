@@ -17,6 +17,7 @@ type GeneralChainConfig struct {
 	BlockstorePath string
 	FreshStart     bool
 	LatestBlock    bool
+	EgsApi         string `mapstructure:"egsApi"`
 }
 
 func (c *GeneralChainConfig) Validate() error {

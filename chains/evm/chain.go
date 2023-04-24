@@ -8,10 +8,14 @@ import (
 	"fmt"
 	"math/big"
 
+	"encoding/json"
+	"net/http"
+
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
 	"github.com/VaivalGithub/chainsafe-core/config/chain"
 	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/VaivalGithub/chainsafe-core/store"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog/log"
 )
 
@@ -74,6 +78,41 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			Priority uint8
 		}
 	*/
+
+	/*
+		GasPrice and GasLimit need to be dynamically calculated
+		For this we need a method that returns the gas prices for all chains dynamically.
+	*/
+	fmt.Printf("\nCalculating GasPrice and GasLimit...\n")
+	provider, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
+	if err != nil {
+		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values: %w \n", err)
+	} else {
+		// Create a new HTTP request
+		req, err := http.NewRequest("GET", c.config.GeneralChainConfig.EgsApi, nil)
+		if err != nil {
+			fmt.Errorf("\nError creating HTTP request for fetching gas: %w \n", err)
+		}
+		// Send the HTTP request and get the response
+		gasProvider := http.DefaultClient
+		resp, err := gasProvider.Do(req)
+		if err != nil {
+			fmt.Errorf("\nError fetching gas: %w \n", err)
+		}
+		defer resp.Body.Close()
+		// Parse the JSON response body
+		var dataJson map[string]interface{}
+		err = json.NewDecoder(resp.Body).Decode(&dataJson)
+		if err != nil {
+			fmt.Println("Error decoding JSON response:", err)
+		}
+		// Get the "fast" gas price from the JSON data
+		fastGas := dataJson["fast"].(map[string]interface{})
+		maxFastGas := fastGas["maxFee"].(float64)
+		fmt.Println("Max Fast Gas:", maxFastGas)
+
+	}
+
 	return c.writer.Execute(msg, transactor.TransactOptions{
 		GasLimit: c.config.GasLimit.Uint64(),
 		GasPrice: c.config.MaxGasPrice,

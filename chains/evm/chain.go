@@ -89,26 +89,26 @@ func (c *EVMChain) Write(msg *message.Message) error {
 	fmt.Printf("\nCalculating GasPrice and GasLimit...\n")
 	chainProvider, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
 	if err != nil {
-		fmt.Errorf("\nFailed to create HTTP provider, resorting to default values:", err)
+		fmt.Println("\nFailed to create HTTP provider, resorting to default values:", err)
 
 	} else {
 		// Create a new HTTP request
 		req, err := http.NewRequest("GET", c.config.GeneralChainConfig.EgsApi, nil)
 		if err != nil {
-			fmt.Errorf("\nError creating HTTP request for fetching gas:", err)
+			fmt.Println("\nError creating HTTP request for fetching gas:", err)
 		}
 		// Send the HTTP request and get the response
 		gasProvider := http.DefaultClient
 		resp, err := gasProvider.Do(req)
 		if err != nil {
-			fmt.Errorf("\nError fetching gas:", err)
+			fmt.Println("\nError fetching gas:", err)
 		}
 		defer resp.Body.Close()
 		// Parse the JSON response body
 		var dataJson map[string]interface{}
 		err = json.NewDecoder(resp.Body).Decode(&dataJson)
 		if err != nil {
-			fmt.Errorf("\nError decoding JSON response:", err)
+			fmt.Println("\nError decoding JSON response:", err)
 		}
 		// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
 		fastGas := dataJson["fast"].(map[string]interface{})
@@ -119,20 +119,27 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		maxFastGasWei := maxFastGas * 1000000000
 		maxFeePerGas := big.NewInt(int64(maxFastGasWei))
 		// Estimating gasLimit
-		// fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
+		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 		toAddress := common.HexToAddress(c.config.Bridge)
 		payload := msg.Payload
 		bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))
 		if err != nil {
-			fmt.Errorf("\nError parsng Bridge ABI:", err)
+			fmt.Println("\nError parsng Bridge ABI:", err)
 		}
 		encodedPayload, err := bridgeABI.Pack("VoteProposal", payload...)
+		if err != nil {
+			fmt.Println("\nError Encoding Calldata:", err)
+		}
+		value := big.NewInt(0)
 		estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
-			To:   &toAddress,
-			Data: encodedPayload,
+			From:     fromAddress,
+			To:       &toAddress,
+			Data:     encodedPayload,
+			Value:    value,
+			GasPrice: maxFeePerGas,
 		})
 		if err != nil {
-			fmt.Errorf("\nError while estimating Gas:", err)
+			fmt.Println("\nError while estimating Gas:", err)
 		}
 		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", estimatedGas, maxFeePerGas)
 		return c.writer.Execute(msg, transactor.TransactOptions{

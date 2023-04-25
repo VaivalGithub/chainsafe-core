@@ -18,6 +18,7 @@ type GeneralChainConfig struct {
 	FreshStart     bool
 	LatestBlock    bool
 	EgsApi         string `mapstructure:"egsApi"`
+	From           string `mapstructure:"from"`
 }
 
 func (c *GeneralChainConfig) Validate() error {

@@ -128,18 +128,15 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		}
 		encodedPayload, err := bridgeABI.Pack("VoteProposal", payload...)
 		estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
-			From:     fromAddress,
-			To:       &toAddress,
-			Gas:      uint64(0),
-			GasPrice: maxFeePerGas,
-			Data:     encodedPayload,
+			To:   &toAddress,
+			Data: encodedPayload,
 		})
 		if err != nil {
 			fmt.Errorf("\nError while estimating Gas:", err)
 		}
 		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", estimatedGas, maxFeePerGas)
 		return c.writer.Execute(msg, transactor.TransactOptions{
-			GasLimit: 180000,
+			GasLimit: estimatedGas,
 			GasPrice: maxFeePerGas,
 		})
 	}

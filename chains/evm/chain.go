@@ -126,7 +126,8 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		if err != nil {
 			fmt.Println("\nError parsng Bridge ABI:", err)
 		}
-		encodedPayload, err := bridgeABI.Pack("voteProposal", payload...)
+		fmt.Println("Payload:", payload)
+		encodedPayload, err := bridgeABI.Pack("voteProposal", payload)
 		if err != nil {
 			fmt.Println("\nError Encoding Calldata:", err)
 		}

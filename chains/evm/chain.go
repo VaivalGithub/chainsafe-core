@@ -121,13 +121,13 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		// Estimating gasLimit
 		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 		toAddress := common.HexToAddress(c.config.Bridge)
-		payload := msg.Payload
+		// payload := msg.Payload
 		bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))
 		if err != nil {
 			fmt.Println("\nError parsng Bridge ABI:", err)
 		}
-		fmt.Println("Payload:", payload)
-		encodedPayload, err := bridgeABI.Pack("voteProposal", payload)
+		fmt.Println("Message Payload:", msg)
+		encodedPayload, err := bridgeABI.Pack("voteProposal", msg)
 		if err != nil {
 			fmt.Println("\nError Encoding Calldata:", err)
 		}

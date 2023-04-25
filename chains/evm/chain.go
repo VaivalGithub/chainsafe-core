@@ -119,7 +119,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		maxFastGasWei := maxFastGas * 1000000000
 		maxFeePerGas := big.NewInt(int64(maxFastGasWei))
 		// Estimating gasLimit
-		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
+		// fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 		toAddress := common.HexToAddress(c.config.Bridge)
 		payload := msg.Payload
 		bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))

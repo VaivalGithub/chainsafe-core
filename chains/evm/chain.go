@@ -130,7 +130,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
 			From:     fromAddress,
 			To:       &toAddress,
-			Gas:      uint64(14999999),
+			Gas:      uint64(0),
 			GasPrice: maxFeePerGas,
 			Data:     encodedPayload,
 		})

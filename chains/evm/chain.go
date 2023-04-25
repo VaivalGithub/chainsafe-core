@@ -5,15 +5,19 @@ package evm
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math/big"
+	"net/http"
 	"strings"
 
-	"encoding/json"
-	"net/http"
+	secp256k1 "github.com/ethereum/go-ethereum/crypto"
 
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/consts"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmclient"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/evmtransaction"
 	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor"
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/executor"
 	"github.com/VaivalGithub/chainsafe-core/config/chain"
 	"github.com/VaivalGithub/chainsafe-core/relayer/message"
 	"github.com/VaivalGithub/chainsafe-core/store"
@@ -22,6 +26,12 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog/log"
+
+	"github.com/VaivalGithub/chainsafe-core/e2e/dummy"
+
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/transactor/signAndSend"
+
+	"github.com/VaivalGithub/chainsafe-core/chains/evm/calls/contracts/bridge"
 )
 
 type EventListener interface {
@@ -68,20 +78,6 @@ func (c *EVMChain) PollEvents(ctx context.Context, sysErr chan<- error, msgChan 
 }
 
 func (c *EVMChain) Write(msg *message.Message) error {
-	// fmt.Printf("This is a debug message. Did someone trigger VoteProposal?")
-
-	/*
-		TransactorOptions interface for reference
-		type TransactOptions struct {
-			GasLimit uint64
-			GasPrice *big.Int
-			Value    *big.Int
-			Nonce    *big.Int
-			ChainID  *big.Int
-			Priority uint8
-		}
-	*/
-
 	/*
 		GasPrice and GasLimit need to be dynamically calculated
 		For this we need a method that returns the gas prices for all chains dynamically.
@@ -97,14 +93,12 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		if err != nil {
 			fmt.Println("\nError creating HTTP request for fetching gas:", err)
 		}
-		// Send the HTTP request and get the response
 		gasProvider := http.DefaultClient
 		resp, err := gasProvider.Do(req)
 		if err != nil {
 			fmt.Println("\nError fetching gas:", err)
 		}
 		defer resp.Body.Close()
-		// Parse the JSON response body
 		var dataJson map[string]interface{}
 		err = json.NewDecoder(resp.Body).Decode(&dataJson)
 		if err != nil {
@@ -121,13 +115,28 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		// Estimating gasLimit
 		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 		toAddress := common.HexToAddress(c.config.Bridge)
-		// payload := msg.Payload
 		bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))
 		if err != nil {
 			fmt.Println("\nError parsng Bridge ABI:", err)
 		}
+		privateKey, err := secp256k1.HexToECDSA(c.config.GeneralChainConfig.Key)
+		if err != nil {
+			panic(err)
+		}
+		client, err := evmclient.NewEVMClient(c.config.GeneralChainConfig.Endpoint, privateKey)
+		if err != nil {
+			panic(err)
+		}
+		dummyGasPricer := dummy.NewStaticGasPriceDeterminant(client, nil)
+		t := signAndSend.NewSignAndSendTransactor(evmtransaction.NewTransaction, dummyGasPricer, client)
+		bridgeContract := bridge.NewBridgeContract(client, common.HexToAddress(c.config.Bridge), t)
 		fmt.Println("Message Payload:", msg)
-		encodedPayload, err := bridgeABI.Pack("voteProposal", msg)
+		mh := executor.NewEVMMessageHandler(bridgeContract)
+		mh.RegisterMessageHandler(c.config.Erc20Handler, executor.ERC20MessageHandler)
+		mh.RegisterMessageHandler(c.config.Erc721Handler, executor.ERC721MessageHandler)
+		mh.RegisterMessageHandler(c.config.GenericHandler, executor.GenericMessageHandler)
+		proposal, err := mh.HandleMessage(msg)
+		encodedPayload, err := bridgeABI.Pack("voteProposal", proposal.Source, proposal.DepositNonce, proposal.ResourceId, proposal.Data)
 		if err != nil {
 			fmt.Println("\nError Encoding Calldata:", err)
 		}

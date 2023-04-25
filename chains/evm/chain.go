@@ -152,9 +152,13 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		if err != nil {
 			fmt.Println("\nError while estimating Gas:", err)
 		}
-		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", estimatedGas, maxFeePerGas)
+		multiplier := c.config.GasMultiplier
+		gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
+		totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
+		gasLimit := uint64(totalGasLimit.Acc())
+		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v], Multiplied Gas: [%+v]\n", estimatedGas, maxFeePerGas, gasLimit)
 		return c.writer.Execute(msg, transactor.TransactOptions{
-			GasLimit: estimatedGas,
+			GasLimit: gasLimit,
 			GasPrice: maxFeePerGas,
 		})
 	}

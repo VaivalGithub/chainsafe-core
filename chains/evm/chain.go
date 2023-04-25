@@ -19,9 +19,7 @@ import (
 	"github.com/VaivalGithub/chainsafe-core/store"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog/log"
 )
@@ -119,18 +117,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		fmt.Println("Max Fast Gas:", maxFastGas)
 		fmt.Println("Max Priority Gas:", maxPriorityGas)
 		maxFastGasWei := maxFastGas * 1000000000
-		// maxFastPriorityGasWei := maxPriorityGas * 1000000000
 		maxFeePerGas := big.NewInt(int64(maxFastGasWei))
-		// maxPriorityFeePerGas := big.NewInt(int64(maxFastPriorityGasWei))
-		// Next we determine the estimated units of Gas
-		privateKey, err := crypto.HexToECDSA(c.config.GeneralChainConfig.Key)
-		if err != nil {
-			fmt.Errorf("\nError declaring private key:", err)
-		}
-		nonce, err := chainProvider.PendingNonceAt(context.Background(), address)
-		if err != nil {
-			fmt.Errorf("\nError declaring fetching nonce:", err)
-		}
 		// Estimating gasLimit
 		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 		toAddress := common.HexToAddress(c.config.Bridge)
@@ -150,14 +137,6 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		if err != nil {
 			fmt.Errorf("\nError while estimating Gas:", err)
 		}
-		auth := bind.NewKeyedTransactor(privateKey)
-		auth.Nonce = big.NewInt(int64(nonce))
-		// auth.Value = big.NewInt(0)
-		auth.GasLimit = uint64(14999999)
-		// auth.GasPrice = gasPrice
-		// fmt.Printf("\nAuth: [%+v]\n", auth)
-		// Execute Txn with new gas fees
-		// We are not passing the gas price for now
 		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", estimatedGas, maxFeePerGas)
 		return c.writer.Execute(msg, transactor.TransactOptions{
 			GasLimit: estimatedGas,

@@ -86,7 +86,6 @@ func (c *EVMChain) Write(msg *message.Message) error {
 	chainProvider, err := ethclient.Dial(c.config.GeneralChainConfig.Endpoint)
 	if err != nil {
 		fmt.Println("\nFailed to create HTTP provider, resorting to default values:", err)
-
 	} else {
 		// Create a new HTTP request
 		req, err := http.NewRequest("GET", c.config.GeneralChainConfig.EgsApi, nil)
@@ -97,70 +96,72 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		resp, err := gasProvider.Do(req)
 		if err != nil {
 			fmt.Println("\nError fetching gas:", err)
+		} else {
+			defer resp.Body.Close()
+			var dataJson map[string]interface{}
+			err = json.NewDecoder(resp.Body).Decode(&dataJson)
+			if err != nil {
+				fmt.Println("\nError decoding JSON response:", err)
+			}
+			// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
+			fastGas := dataJson["fast"].(map[string]interface{})
+			maxFastGas := fastGas["maxFee"].(float64)
+			maxPriorityGas := fastGas["maxPriorityFee"].(float64)
+			fmt.Println("Max Fast Gas:", maxFastGas)
+			fmt.Println("Max Priority Gas:", maxPriorityGas)
+			maxFastGasWei := maxFastGas * 1000000000
+			maxFeePerGas := big.NewInt(int64(maxFastGasWei))
+			// Estimating gasLimit
+			fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
+			toAddress := common.HexToAddress(c.config.Bridge)
+			bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))
+			if err != nil {
+				fmt.Println("\nError parsng Bridge ABI:", err)
+			}
+			privateKey, err := secp256k1.HexToECDSA(c.config.GeneralChainConfig.Key)
+			if err != nil {
+				panic(err)
+			}
+			client, err := evmclient.NewEVMClient(c.config.GeneralChainConfig.Endpoint, privateKey)
+			if err != nil {
+				panic(err)
+			}
+			dummyGasPricer := dummy.NewStaticGasPriceDeterminant(client, nil)
+			t := signAndSend.NewSignAndSendTransactor(evmtransaction.NewTransaction, dummyGasPricer, client)
+			bridgeContract := bridge.NewBridgeContract(client, common.HexToAddress(c.config.Bridge), t)
+			fmt.Println("Message Payload:", msg)
+			mh := executor.NewEVMMessageHandler(bridgeContract)
+			mh.RegisterMessageHandler(c.config.Erc20Handler, executor.ERC20MessageHandler)
+			mh.RegisterMessageHandler(c.config.Erc721Handler, executor.ERC721MessageHandler)
+			mh.RegisterMessageHandler(c.config.GenericHandler, executor.GenericMessageHandler)
+			proposal, err := mh.HandleMessage(msg)
+			encodedPayload, err := bridgeABI.Pack("voteProposal", proposal.Source, proposal.DepositNonce, proposal.ResourceId, proposal.Data)
+			if err != nil {
+				fmt.Println("\nError Encoding Calldata:", err)
+			}
+			value := big.NewInt(0)
+			fmt.Printf("\nFrom: %+v \n To: %+v \n Data: %+v \n Value: %+v \n GasPrice: %+v", fromAddress, &toAddress, encodedPayload, value, maxFeePerGas)
+			estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
+				From:     fromAddress,
+				To:       &toAddress,
+				Data:     encodedPayload,
+				Value:    value,
+				GasPrice: maxFeePerGas,
+			})
+			if err != nil {
+				fmt.Println("\nError while estimating Gas:", err)
+			}
+			// Multiplying with gas multiplier
+			multiplier := c.config.GasMultiplier
+			gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
+			totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
+			gasLimit := uint64(totalGasLimit.Acc())
+			fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v], Multiplied Gas: [%+v]\n", estimatedGas, maxFeePerGas, gasLimit)
+			return c.writer.Execute(msg, transactor.TransactOptions{
+				GasLimit: gasLimit,
+				GasPrice: maxFeePerGas,
+			})
 		}
-		defer resp.Body.Close()
-		var dataJson map[string]interface{}
-		err = json.NewDecoder(resp.Body).Decode(&dataJson)
-		if err != nil {
-			fmt.Println("\nError decoding JSON response:", err)
-		}
-		// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
-		fastGas := dataJson["fast"].(map[string]interface{})
-		maxFastGas := fastGas["maxFee"].(float64)
-		maxPriorityGas := fastGas["maxPriorityFee"].(float64)
-		fmt.Println("Max Fast Gas:", maxFastGas)
-		fmt.Println("Max Priority Gas:", maxPriorityGas)
-		maxFastGasWei := maxFastGas * 1000000000
-		maxFeePerGas := big.NewInt(int64(maxFastGasWei))
-		// Estimating gasLimit
-		fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
-		toAddress := common.HexToAddress(c.config.Bridge)
-		bridgeABI, err := abi.JSON(strings.NewReader(consts.BridgeABI))
-		if err != nil {
-			fmt.Println("\nError parsng Bridge ABI:", err)
-		}
-		privateKey, err := secp256k1.HexToECDSA(c.config.GeneralChainConfig.Key)
-		if err != nil {
-			panic(err)
-		}
-		client, err := evmclient.NewEVMClient(c.config.GeneralChainConfig.Endpoint, privateKey)
-		if err != nil {
-			panic(err)
-		}
-		dummyGasPricer := dummy.NewStaticGasPriceDeterminant(client, nil)
-		t := signAndSend.NewSignAndSendTransactor(evmtransaction.NewTransaction, dummyGasPricer, client)
-		bridgeContract := bridge.NewBridgeContract(client, common.HexToAddress(c.config.Bridge), t)
-		fmt.Println("Message Payload:", msg)
-		mh := executor.NewEVMMessageHandler(bridgeContract)
-		mh.RegisterMessageHandler(c.config.Erc20Handler, executor.ERC20MessageHandler)
-		mh.RegisterMessageHandler(c.config.Erc721Handler, executor.ERC721MessageHandler)
-		mh.RegisterMessageHandler(c.config.GenericHandler, executor.GenericMessageHandler)
-		proposal, err := mh.HandleMessage(msg)
-		encodedPayload, err := bridgeABI.Pack("voteProposal", proposal.Source, proposal.DepositNonce, proposal.ResourceId, proposal.Data)
-		if err != nil {
-			fmt.Println("\nError Encoding Calldata:", err)
-		}
-		value := big.NewInt(0)
-		fmt.Printf("\nFrom: %+v \n To: %+v \n Data: %+v \n Value: %+v \n GasPrice: %+v", fromAddress, &toAddress, encodedPayload, value, maxFeePerGas)
-		estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
-			From:     fromAddress,
-			To:       &toAddress,
-			Data:     encodedPayload,
-			Value:    value,
-			GasPrice: maxFeePerGas,
-		})
-		if err != nil {
-			fmt.Println("\nError while estimating Gas:", err)
-		}
-		multiplier := c.config.GasMultiplier
-		gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
-		totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
-		gasLimit := uint64(totalGasLimit.Acc())
-		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v], Multiplied Gas: [%+v]\n", estimatedGas, maxFeePerGas, gasLimit)
-		return c.writer.Execute(msg, transactor.TransactOptions{
-			GasLimit: gasLimit,
-			GasPrice: maxFeePerGas,
-		})
 	}
 	// the EVMChain contains the config. Let's log it.
 	fmt.Printf("\nDefault Config for VoteProposal: [%+v]\n", c.config)

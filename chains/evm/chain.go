@@ -131,6 +131,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			fmt.Println("\nError Encoding Calldata:", err)
 		}
 		value := big.NewInt(0)
+		fmt.Printf("\nFrom: %+v \n To: %+v \n Data: %+v \n Value: %+v \n GasPrice: %+v", fromAddress, &toAddress, encodedPayload, value, maxFeePerGas)
 		estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
 			From:     fromAddress,
 			To:       &toAddress,

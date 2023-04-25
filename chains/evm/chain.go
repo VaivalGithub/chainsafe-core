@@ -139,7 +139,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		}
 		fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v]\n", estimatedGas, maxFeePerGas)
 		return c.writer.Execute(msg, transactor.TransactOptions{
-			GasLimit: estimatedGas,
+			GasLimit: 180000,
 			GasPrice: maxFeePerGas,
 		})
 	}

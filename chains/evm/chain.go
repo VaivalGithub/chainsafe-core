@@ -142,11 +142,11 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			value := big.NewInt(0)
 			fmt.Printf("\nFrom: %+v \n To: %+v \n Data: %+v \n Value: %+v \n GasPrice: %+v", fromAddress, &toAddress, encodedPayload, value, maxFeePerGas)
 			estimatedGas, err := chainProvider.EstimateGas(context.Background(), ethereum.CallMsg{
-				From:     fromAddress,
-				To:       &toAddress,
-				Data:     encodedPayload,
-				Value:    value,
-				GasPrice: maxFeePerGas,
+				From:  fromAddress,
+				To:    &toAddress,
+				Data:  encodedPayload,
+				Value: value,
+				// GasPrice: maxFeePerGas,
 			})
 			if err != nil {
 				fmt.Println("\nError while estimating Gas:", err)

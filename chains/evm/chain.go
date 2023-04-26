@@ -158,7 +158,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			gasLimit := uint64(totalGasLimit.Acc())
 			fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v], Multiplied Gas: [%+v]\n", estimatedGas, maxFeePerGas, gasLimit)
 			return c.writer.Execute(msg, transactor.TransactOptions{
-				GasLimit: gasLimit,
+				GasLimit: estimatedGas,
 				GasPrice: maxFeePerGas,
 			})
 		}

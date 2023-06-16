@@ -10,6 +10,7 @@ import (
 	"math/big"
 	"net/http"
 	"strings"
+	"strconv"
 
 	secp256k1 "github.com/ethereum/go-ethereum/crypto"
 
@@ -109,7 +110,15 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			maxPriorityGas := fastGas["maxPriorityFee"].(string)
 			fmt.Println("Max Fast Gas:", maxFastGas)
 			fmt.Println("Max Priority Gas:", maxPriorityGas)
-			maxFastGasWei := maxFastGas * 1000000000
+
+			maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
+			if err != nil {
+				fmt.Println("\nError parsing maxFastGas:", err)
+			}
+			maxFastGasWei := int64(maxFastGasFloat * 1000000000)
+
+
+			// maxFastGasWei := maxFastGas * 1000000000
 			maxFeePerGas := big.NewInt(int64(maxFastGasWei))
 			// Estimating gasLimit
 			fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)

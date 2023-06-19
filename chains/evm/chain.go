@@ -106,12 +106,27 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			}
 			// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
 			fastGas := dataJson["fast"].(map[string]interface{})
-			// maxFastGas := fastGas["maxFee"].(string)
+			maxFastGas := fastGas["maxFee"].(string)
 			// maxPriorityGas := fastGas["maxPriorityFee"].(string)
 			// fmt.Println("Max Fast Gas:", maxFastGas)
 			// fmt.Println("Max Priority Gas:", maxPriorityGas)
 
-			maxFastGas := strconv.FormatFloat(fastGas["maxFee"].(float64), 'f', -1, 64)
+			// maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
+			// if err != nil {
+			// 	fmt.Println("\nError parsing maxFastGas:", err)
+			// }
+			// maxFastGasWei := int64(maxFastGasFloat * 1000000000)
+
+
+			// // maxFastGasWei := maxFastGas * 1000000000
+			// maxFeePerGas := big.NewInt(int64(maxFastGasWei))
+
+
+
+
+
+
+
 
 
 			maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
@@ -119,10 +134,10 @@ func (c *EVMChain) Write(msg *message.Message) error {
 				fmt.Println("\nError parsing maxFastGas:", err)
 			}
 			maxFastGasWei := int64(maxFastGasFloat * 1000000000)
+			
+			maxFeePerGas := big.NewInt(maxFastGasWei)
 
 
-			// maxFastGasWei := maxFastGas * 1000000000
-			maxFeePerGas := big.NewInt(int64(maxFastGasWei))
 			// Estimating gasLimit
 			fromAddress := common.HexToAddress(c.config.GeneralChainConfig.From)
 			toAddress := common.HexToAddress(c.config.Bridge)

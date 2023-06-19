@@ -105,8 +105,8 @@ func (c *EVMChain) Write(msg *message.Message) error {
 				fmt.Println("\nError decoding JSON response:", err)
 			}
 			// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
-			fastGas := dataJson["fast"].(map[string]interface{})
-			maxFastGas := fastGas["maxFee"].(string)
+			// fastGas := dataJson["fast"].(map[string]interface{})
+			// maxFastGas := fastGas["maxFee"].(string)
 			// maxPriorityGas := fastGas["maxPriorityFee"].(string)
 			// fmt.Println("Max Fast Gas:", maxFastGas)
 			// fmt.Println("Max Priority Gas:", maxPriorityGas)
@@ -121,21 +121,44 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			// // maxFastGasWei := maxFastGas * 1000000000
 			// maxFeePerGas := big.NewInt(int64(maxFastGasWei))
 
+            // maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
+			// if err != nil {
+			// 	fmt.Println("\nError parsing maxFastGas:", err)
+			// }
+			// maxFastGasWei := int64(maxFastGasFloat * 1000000000)
+			
+			// maxFeePerGas := big.NewInt(maxFastGasWei)
 
 
 
 
 
-
-
-
-			maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
-			if err != nil {
-				fmt.Println("\nError parsing maxFastGas:", err)
+			fastGas := dataJson["fast"].(map[string]interface{})
+			maxFastGas := fastGas["maxFee"]
+			
+			var maxFastGasFloat float64
+			var maxFastGasWei int64
+			var err error
+			
+			if maxFastGasStr, ok := maxFastGas.(string); ok {
+				maxFastGasFloat, err = strconv.ParseFloat(maxFastGasStr, 64)
+				if err != nil {
+					fmt.Println("\nError parsing maxFastGas:", err)
+				}
+				maxFastGasWei = int64(maxFastGasFloat * 1000000000)
+			} else if maxFastGasFloat, ok := maxFastGas.(float64); ok {
+				maxFastGasWei = int64(maxFastGasFloat * 1000000000)
+			} else {
+				fmt.Println("\nInvalid type for maxFastGas")
+				// Handle the error accordingly
 			}
-			maxFastGasWei := int64(maxFastGasFloat * 1000000000)
 			
 			maxFeePerGas := big.NewInt(maxFastGasWei)
+			
+
+
+
+
 
 
 			// Estimating gasLimit

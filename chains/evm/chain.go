@@ -106,10 +106,13 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			}
 			// Next we fetch the maxFeePerGas and maxPriorityFeePerGas from the JSON
 			fastGas := dataJson["fast"].(map[string]interface{})
-			maxFastGas := fastGas["maxFee"].(string)
-			maxPriorityGas := fastGas["maxPriorityFee"].(string)
-			fmt.Println("Max Fast Gas:", maxFastGas)
-			fmt.Println("Max Priority Gas:", maxPriorityGas)
+			// maxFastGas := fastGas["maxFee"].(string)
+			// maxPriorityGas := fastGas["maxPriorityFee"].(string)
+			// fmt.Println("Max Fast Gas:", maxFastGas)
+			// fmt.Println("Max Priority Gas:", maxPriorityGas)
+
+			maxFastGas := strconv.FormatFloat(fastGas["maxFee"].(float64), 'f', -1, 64)
+
 
 			maxFastGasFloat, err := strconv.ParseFloat(maxFastGas, 64)
 			if err != nil {

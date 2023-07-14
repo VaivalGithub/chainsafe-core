@@ -63,7 +63,7 @@ func BindDepositFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&Amount, "amount", "", "Amount to deposit")
 	cmd.Flags().Uint8Var(&DomainID, "domain", 0, "Destination domain ID")
 	cmd.Flags().StringVar(&ResourceID, "resource", "", "Resource ID for transfer")
-	cmd.Flags().Uint64Var(&Decimals, "decimals", 0, "ERC20 token decimals")
+	cmd.Flags().Uint64Var(&Decimals, "decimals", 6, "ERC20 token decimals")
 	cmd.Flags().StringVar(&Priority, "priority", "none", "Transaction priority speed")
 	flags.MarkFlagsAsRequired(cmd, "recipient", "bridge", "amount", "domain", "resource", "decimals")
 }
@@ -109,7 +109,7 @@ func DepositCmd(cmd *cobra.Command, args []string, contract *bridge.BridgeContra
 
 	log.Info().Msgf(
 		"%s tokens were transferred to %s from %s with hash %s",
-		Amount, RecipientAddress.Hex(), senderKeyPair.CommonAddress().String(), hash.Hex(),
+		RealAmount, RecipientAddress.Hex(), senderKeyPair.CommonAddress().String(), hash.Hex(),
 	)
 	return nil
 }

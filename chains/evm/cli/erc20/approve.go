@@ -54,7 +54,7 @@ func BindApproveFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&Erc20Address, "contract", "", "ERC20 contract address")
 	cmd.Flags().StringVar(&Amount, "amount", "", "Amount to grant allowance")
 	cmd.Flags().StringVar(&Recipient, "recipient", "", "Recipient address")
-	cmd.Flags().Uint64Var(&Decimals, "decimals", 0, "ERC20 token decimals")
+	cmd.Flags().Uint64Var(&Decimals, "decimals", 6, "ERC20 token decimals")
 	flags.MarkFlagsAsRequired(cmd, "contract", "amount", "recipient", "decimals")
 }
 
@@ -102,7 +102,7 @@ Decimals: %v`,
 	}
 	log.Info().Msgf(
 		"%s account granted allowance on %v tokens of %s",
-		RecipientAddress.String(), Amount, RecipientAddress.String(),
+		RecipientAddress.String(), RealAmount, RecipientAddress.String(),
 	)
 	return nil
 }

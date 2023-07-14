@@ -56,7 +56,7 @@ func init() {
 func BindMintFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&Erc20Address, "contract", "", "ERC20 contract address")
 	cmd.Flags().StringVar(&Amount, "amount", "", "Deposit amount")
-	cmd.Flags().Uint64Var(&Decimals, "decimals", 0, "ERC20 token decimals")
+	cmd.Flags().Uint64Var(&Decimals, "decimals", 6, "ERC20 token decimals")
 	cmd.Flags().StringVar(&DstAddress, "recipient", "", "Recipient address")
 	flags.MarkFlagsAsRequired(cmd, "contract", "amount", "decimals", "recipient")
 }
@@ -99,6 +99,6 @@ func MintCmd(cmd *cobra.Command, args []string, contract *erc20.ERC20Contract) e
 		log.Error().Err(err)
 		return err
 	}
-	log.Info().Msgf("%v tokens minted", Amount)
+	log.Info().Msgf("%v tokens minted", RealAmount)
 	return nil
 }

@@ -215,9 +215,9 @@ func (c *EVMChain) Write(msg *message.Message) error {
 
 			// Convert the estimatedGas to a big.Float
 	gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
-
+	multiplier := big.NewInt(10)
 	// Convert multiplierBigInt to *big.Float
-	multiplierFloat := new(big.Float).SetInt(10)
+	multiplierFloat := new(big.Float).SetInt(multiplier)
 
 	// Multiply gasEstimateFloat by the multiplierFloat and store the result in totalGasFloat
 	totalGasFloat := new(big.Float).Mul(gasEstimateFloat, multiplierFloat)

@@ -204,12 +204,19 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			// Multiplying with gas multiplier
 			multiplier := c.config.GasMultiplier
 			gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
-			totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
-			gasLimit := uint64(totalGasLimit.Acc())
+			// totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
+			totalGasFloat := new(big.Float).Mul(gasEstimateFloat, big.NewFloat(float64(multiplier)))
+			totalGasInt := new(big.Int)
+			totalGasFloat.Int(totalGasInt)
+			gasLimit := totalGasInt.Uint64()
+
+
+			// gasLimit := uint64(totalGasLimit.Acc())
 			fmt.Printf("\nGas Limit: [%+v], Gas Price: [%+v], Multiplied Gas: [%+v]\n", estimatedGas, maxFeePerGas, gasLimit)
 			return c.writer.Execute(msg, transactor.TransactOptions{
-				GasLimit: estimatedGas,
-				GasPrice: maxFeePerGas,
+				// GasLimit: estimatedGas,
+				GasLimit: gasLimit,
+                GasPrice: maxFeePerGas,
 			})
 		}
 	}

@@ -203,6 +203,17 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			}
 			// Multiplying with gas multiplier
 			multiplier := c.config.GasMultiplier
+
+
+// Convert multiplierStr to an integer
+multiplier, err := strconv.Atoi(multiplierStr)
+if err != nil {
+	// Handle the error if the conversion fails
+	fmt.Println("Error converting GasMultiplier to integer:", err)
+	return
+}
+
+
 			gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
 			// totalGasLimit := gasEstimateFloat.Mul(gasEstimateFloat, multiplier)
 	

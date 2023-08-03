@@ -202,9 +202,9 @@ func (c *EVMChain) Write(msg *message.Message) error {
 				fmt.Println("\nError while estimating Gas:", err)
 			}
 			// Multiplying with gas multiplier
-			multiplier := c.config.GasMultiplier
+			// multiplier := c.config.GasMultiplier
 
-
+			multiplierStr := c.config.GasMultiplier
 // Convert multiplierStr to an integer
 multiplier, err := strconv.Atoi(multiplierStr)
 if err != nil {

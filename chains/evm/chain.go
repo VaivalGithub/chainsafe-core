@@ -204,20 +204,20 @@ func (c *EVMChain) Write(msg *message.Message) error {
 			// Multiplying with gas multiplier
 			// multiplier := c.config.GasMultiplier
 
-			multiplierStr := c.config.GasMultiplier
-// Convert multiplierStr to an integer
-// Convert multiplierStr to a big.Int
-multiplierBigInt, ok := new(big.Int).SetString(multiplierStr, 10)
-if !ok {
-	fmt.Println("Error converting GasMultiplier to big.Int")
-	return
-}
+// 			multiplierStr := c.config.GasMultiplier
+// // Convert multiplierStr to an integer
+// // Convert multiplierStr to a big.Int
+// multiplierBigInt, ok := new(big.Int).SetString(multiplierStr, 10)
+// if !ok {
+// 	fmt.Println("Error converting GasMultiplier to big.Int")
+// 	return
+// }
 
 			// Convert the estimatedGas to a big.Float
 	gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
 
 	// Convert multiplierBigInt to *big.Float
-	multiplierFloat := new(big.Float).SetInt(multiplierBigInt)
+	multiplierFloat := new(big.Float).SetInt(10)
 
 	// Multiply gasEstimateFloat by the multiplierFloat and store the result in totalGasFloat
 	totalGasFloat := new(big.Float).Mul(gasEstimateFloat, multiplierFloat)

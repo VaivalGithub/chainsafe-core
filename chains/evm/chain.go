@@ -55,7 +55,7 @@ type EVMChain struct {
 
 func NewEVMChain(listener EventListener, writer ProposalExecutor, blockstore *store.BlockStore, config *chain.EVMConfig) *EVMChain {
 	fmt.Printf("Initialising EVM Chain...")
-	fmt.Printf("Passed Config: [%+v\n]", config)
+	//fmt.Printf("Passed Config: [%+v\n]", config)
 	return &EVMChain{listener: listener, writer: writer, blockstore: blockstore, config: config}
 }
 
@@ -230,7 +230,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 		}
 	}
 	// the EVMChain contains the config. Let's log it.
-	fmt.Printf("\nDefault Config for VoteProposal: [%+v]\n", c.config)
+	//fmt.Printf("\nDefault Config for VoteProposal: [%+v]\n", c.config)
 	return c.writer.Execute(msg, transactor.TransactOptions{
 		GasLimit: c.config.GasLimit.Uint64(),
 		GasPrice: c.config.MaxGasPrice,

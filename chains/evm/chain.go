@@ -208,7 +208,7 @@ func (c *EVMChain) Write(msg *message.Message) error {
 	        gasEstimateFloat := new(big.Float).SetUint64(estimatedGas)
 	        // multiplier := big.NewInt(10)
 
-		multiplierInt := big.NewInt(int64(c.config.GasMultiplier))
+		multiplierInt := big.NewInt(c.config.GasMultiplier)
                 multiplierFloat := new(big.Float).SetInt(multiplierInt)
 		//multiplier := c.config.GasMultiplier
 	        // Convert multiplierBigInt to *big.Float
